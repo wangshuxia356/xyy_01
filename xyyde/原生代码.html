@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>L12</title>
+</head>
+
+<body>
+    <script>
+        // 数组分割成字符串
+
+
+        var extend = function (proto, obj) {
+            for (const key in obj) {
+                if (!proto[key])
+                    proto[key] = obj[key]
+            }
+        }
+
+        extend(Array.prototype, {
+            join(code) {
+                var result = ''
+                for (let i = 0; i < this.length; i++) {
+                    result += this[i]
+                    if (i < this.length - 1)
+                        result += code
+                }
+                return result
+            },
+
+
+            //数组末尾添加元素
+            push(obj) {
+                for (let i = 0; i < arguments.length; i++) {
+                    this[this.length] = arguments[i]
+                }
+                console.log(arguments)
+            },
+
+
+            //数组末尾删除元素
+            pop(obj) {
+                var result = this[this.length - 1]
+                this.length -= 1
+                return result
+            },
+
+
+            //数组开头添加元素
+            unshift() {
+                var length = this.length + arguments.length - 1
+                for (let i = length; i >= arguments.length; i--) {
+                    this[i] = this[i - arguments.length]
+                }
+                for (let j = 0; j < arguments.length; j++) {
+                    this[j] = arguments[j]
+                }
+            },
+
+
+            //数组开头删除元素
+            shift(obj) {
+                var result = this[0]
+                for (let i = 1; i < this.length; i++) {
+                    this[i - 1] = this[i]
+                }
+                this.length--
+                return result
+            },
+
+            //翻转
+            reverse() {
+                for (let i = 0; i < this.length / 2; i++) {
+                    var temp = this[i]
+                    this[i] = this[this.length - 1 - i]
+                    this[this.length - 1 - i] = temp
+                }
+            },
+
+            //包含
+            includes(obj) {
+                for (let i = 0; i < this.length; i++) {
+                    if (this[i] === obj)
+                        return true
+                }
+                return false
+            },
+
+            //返回某字符第一次出现的位置
+            indexOf(obj) {
+                for (let i = 0; i < this.length; i++) {
+                    if (this[i] === obj)
+                        return i
+                }
+                return false
+            },
+
+            //添加或删除数组中的元素，返回被删除的项目
+            splice(start, length) {
+                if (length === undefined) {
+                    this.length -= (this.length - start)
+                } else {
+                    for (let i = start; i < this.length; i++) {
+                    }
+                    this.length -= length
+                }
+            },
+
+            //提取字符串的某个部分，并以新的字符串返回被提取的部分
+            slice(start, end) {
+                var result = []
+                for (let i = start; i < end; i++) {
+                    result.push(this[i])
+                }
+                return result
+            },
+
+            //根据下标删除1个
+            removeAt(index) {
+                if (index >= 0 && index < this.length)
+                    this.splice(index, 1)
+            },
+            //直接删除元素本身
+            remove(obj) {
+                this.removeAt(this.indexOf(obj))
+            },
+
+            //数组里面此元素全部删除1
+            removeAll(obj) {
+                if (this.includes(obj)) {
+                    this.remove(obj)
+                    arguments.callee.call(this, obj)
+                }
+            },
+            //数组里固定位置添加元素
+            insertAt(start, obj) {
+                for (let i = this.length; i > start; i--) {
+                    this[i] = this[i - 1]
+                }
+                this[start] = obj
+            },
+
+            //some 方法:查找数组中是否有符合条件的元素，有则返回true,否则返回false
+            some(fn) {
+                for (let i = 0; i < this.length; i++) {
+                    if (fn(this[i], i))
+                        return true
+                }
+                return false
+            },
+
+            //forEach 方法:数组每个元素都执行一次回调函数
+            forEach(fn) {
+                for (let i = 0; i < this.length; i++) {
+                    fn(this[i], i)
+                }
+            },
+
+            //find 方法:检测数组元素，并返回符合条件的第一个元素
+            find(fn) {
+                for (let i = 0; i < this.length; i++) {
+                    if (fn(this[i], i))
+                        return this[i]
+                }
+            },
+
+            //filter 方法:检测数组元素，并返回符合条件的所有元素
+            filter(fn) {
+                var result = []
+                for (let i = 0; i < this.length; i++) {
+                    if (fn(this[i], i))
+                        result.push(this[i])
+                }
+                return result
+            },
+
+            //every 方法:数组中所有元素都符合条件，才返回true
+            every(fn) {
+                for (let i = 0; i < this.length; i++) {
+                    if (!fn(this[i], i))
+                        return false
+                }
+                return true
+            },
+
+            //map 方法:通过指定函数处理数组的每个元素，并返回处理后的数组
+            map(fn) {
+                var result = []
+                for (let i = 0; i < this.length; i++) {
+                    result.push(fn(this[i], i))
+                }
+                return result
+            }
+        })
+
+
+
+        var arr = [1, 2, 3, 4, 5, 2, 2]
+        arr.removeAll(2)
+        console.log(arr.join('-'))
+        console.log(arr)
+
+    </script>
+</body>
+
+</html>
