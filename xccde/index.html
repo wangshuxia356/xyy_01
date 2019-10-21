@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .banner {
+            display: block;
+            /* width: 300px;
+            height: 300px; */
+        }
+
+        .container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin: 100px auto;
+            align-items: center;
+        }
+
+        #dots {
+            position: absolute;
+            /* background: #000; */
+            display: flex;
+            justify-content: center;
+            bottom: 10px;
+        }
+
+        #dots li {
+            height: 12px;
+            width: 12px;
+            border: 2px solid purple;
+            display: flex;
+            margin: 0px 5px;
+            border-radius: 50%;
+        }
+
+        #dots li.active {
+            background: purple;
+            cursor: pointer;
+        }
+
+        #prev {
+            width: 40px;
+            height: 80px;
+            background: #ada;
+            position: absolute;
+            display: none;
+            left: 0px;
+            transition: 1s;
+        }
+
+        #next {
+            width: 40px;
+            height: 80px;
+            background: #ada;
+            position: absolute;
+            display: none;
+            right: 0px;
+            transition: 1s;
+        }
+
+        .container:hover #next {
+            display: block;
+        }
+
+        .container:hover #prev {
+            display: block;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <img src="1.jpg" id="banner">
+        <ul id='dots'>
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <div id="prev"></div>
+        <div id="next"></div>
+    </div>
+    <script>
+        var timer = null
+        var banner = document.getElementById('banner')
+        var prev = document.getElementById('prev')
+        prev.onclick = () => {
+            clearInterval(timer)
+            if (--index === -1) index = arr.length - 1
+            changeStyle()
+            run()
+        }
+        var next = document.getElementById('next')
+        next.onclick = () => {
+            clearInterval(timer)
+            if (++index === arr.length) index = 0
+            changeStyle()
+            run()
+        }
+        var dots = document.getElementById('dots').children
+        for (let i = 0; i < dots.length; i++) {
+            const li = dots[i];
+            li.onmouseenter = function () {
+                clearInterval(timer)
+                index = i
+                changeStyle()
+            }
+            li.onmouseleave = function () {
+                run()
+            }
+        }
+
+        banner.style.width = '280px'
+        banner.style.height = '300px'
+        banner.classList.add('banner')
+        var arr = ['1.jpg', '2.jpg', '3.jpg']
+        var index = 0
+
+        //每隔1s执行一次
+        //创建定时器
+        function run() {
+            timer = setInterval(function () {
+                if (++index === arr.length) index = 0
+                changeStyle()
+            }, 1000)
+        }
+        run()
+        //样式切换
+        function changeStyle() {
+            banner.setAttribute('src', 'img/' + arr[index])
+            //将当前有active的移除active
+            var active = document.getElementsByClassName("active")
+            active[0].classList.remove('active')
+            dots[index].classList.add('active')
+        }
+
+
+    </script>
+
+</body>
+
+</html>

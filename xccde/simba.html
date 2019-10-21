@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #banner {
+            width: 500px;
+            height: 300px;
+            background: red;
+            transition: 0.5;
+        }
+
+        .container {
+            border: 1px solid red;
+            margin: 100px auto;
+            display: flex;
+            width: 500px;
+            justify-content: center;
+            position: relative;
+            align-items: center;
+        }
+
+        #dots {
+            display: flex;
+            height: 20px;
+            position: absolute;
+            bottom: 10px;
+        }
+
+        #dots li {
+            margin: 0px 10px;
+            border-radius: 50%;
+            width: 20px;
+            background: #fff;
+            height: 20px;
+        }
+
+        #dots li.active {
+            background: pink;
+        }
+
+
+        .container:hover .arrow {
+            display: block;
+        }
+
+        .arrow {
+            width: 50px;
+            height: 100px;
+            background: purple;
+            position: absolute;
+            display: none;
+        }
+
+        .arrow-left {
+            left: 0px;
+        }
+
+        .arrow-right {
+            right: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="banner"></div>
+        <ul id="dots"></ul>
+        <div class="arrow arrow-left"></div>
+        <div class="arrow arrow-right"></div>
+    </div>
+    <script>
+        var timer = null;
+        var index = 0
+        var dots = document.getElementById("dots")
+        var banner = document.getElementById("banner")
+        var arrowLeft = document.getElementsByClassName("arrow-left")[0]
+        var arrowRight = document.getElementsByClassName("arrow-right")[0]
+        var arr = [{
+            url: "https://music.163.com/#/song?id=1362129598",
+            color: "red"
+        }, {
+            url: "https://music.163.com/#/song?id=1361030268",
+            color: "green"
+        }, {
+            url: "https://music.163.com/#/song?id=1363550350",
+            color: "orange"
+        }, {
+            url: "https://music.163.com/#/song?id=618325",
+            color: "yellow"
+        }]
+
+        banner.onclick = () => {
+            location.href = arr[index].url
+        }
+
+
+        arrowLeft.onclick = () => {
+            clearInterval(timer)
+            if (--index === -1) index = arr.length - 1
+            changeStyle()
+            run()
+        }
+
+        arrowRight.onclick = () => {
+            clearInterval(timer)
+            if (++index === arr.length) index = 0
+            changeStyle()
+            run()
+        }
+
+
+        //根据背景数量，生成对应个数的li
+        arr.forEach((item, i) => {
+            var li = document.createElement("li")
+            //第一个li高亮
+            if (i === 0) li.classList.add("active")
+            // li.innerHTML = i + 1
+            dots.append(li)
+            li.onmouseover = function () {
+                clearInterval(timer)
+                index = i
+                changeStyle()
+            }
+            li.onmouseout = function () {
+                run()
+            }
+        })
+
+        var run = () => {
+            timer = setInterval(() => {
+                //控制下标
+                if (++index === arr.length) index = 0
+                changeStyle()
+            }, 1000);
+        }
+
+        var changeStyle = () => {
+            //切换背景
+            banner.style["background-color"] = arr[index].color
+            //让当前高亮的li还原样式
+            var active = document.getElementsByClassName("active")[0]
+            active.classList.remove("active")
+            //切换新的高亮元素
+            dots.children[index].classList.add("active")
+        }
+
+        run()
+    </script>
+</body>
+
+</html>
